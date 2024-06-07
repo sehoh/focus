@@ -1,5 +1,6 @@
 package com.example.focus.focussession;
 
+import com.example.focus.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,21 +13,22 @@ import java.time.LocalDateTime;
 @Builder
 public class FocusSession {
     @Id
-    @SequenceGenerator(name = "seq_focussession", sequenceName = "seq_focussession", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_focussession")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "focussession_id")
     private Long id;
 
-    private LocalDateTime startDate;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalDateTime startDateTime; // 시작 시각
+    private LocalDateTime endDateTime; // 종료 시각
+
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
     public FocusSessionDto toDto() {
         return FocusSessionDto.builder()
                 .id(this.id)
-                .startDate(this.startDate)
-                .startTime(this.startTime)
-                .endTime(this.endTime)
+                .startDateTime(this.startDateTime)
+                .endDateTime(this.endDateTime)
                 .build();
     }
 }

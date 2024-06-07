@@ -10,17 +10,20 @@ import lombok.*;
 @Builder
 public class Member {
     @Id
-    @SequenceGenerator(name = "seq_user", sequenceName = "seq_user", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user")
-    @Column(name = "member_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MEMBER_ID")
     private Long id;
 
     private String username;
     private String email;
     private String pwd;
+
+    @Enumerated(EnumType.STRING)
     private LoginType loginType;
     private String nickname;
+    @Enumerated(EnumType.STRING)
     private UserType userType;
+    @Enumerated(EnumType.STRING)
     private FocusStatus focusStatus;
 
     public MemberDto toDto() {
