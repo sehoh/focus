@@ -20,7 +20,7 @@ public class FocusSession {
     private LocalDateTime startDateTime; // 시작 시각
     private LocalDateTime endDateTime; // 종료 시각
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 

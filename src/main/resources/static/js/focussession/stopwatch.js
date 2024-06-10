@@ -58,7 +58,7 @@ function endClock() {
 
 
     $.ajax({
-        url: "/api/focussession/endclock",
+        url: "/api/focus-session/endclock",
         type: "POST",
         dataType: "JSON",
         contentType : "application/json",

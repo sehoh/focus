@@ -1,5 +1,6 @@
 package com.example.focus.focussession;
 
+import com.example.focus.DateTimeUtils;
 import com.example.focus.member.MemberDto;
 import com.example.focus.member.MemberServiceImpl;
 import jakarta.servlet.http.HttpSession;
@@ -23,24 +24,37 @@ public class FocusSessionApiController {
     private final MemberServiceImpl memberService;
 
 
-    @PostMapping(value = "/api/focussession/endclock")
+    @PostMapping(value = "/api/focus-session/endclock")
     public ResponseEntity<Object> endClock(@RequestBody Map<String, String> payload,
-                                           HttpSession session) {
+                                           HttpSession loginSession) {
         // TODO :: NULL check
-        MemberDto member = memberService.findMember(String.valueOf(session.getAttribute("loginId"))).get().toDto();
-        String startTime = String.valueOf(payload.get("startTime"));
-        String endTime = String.valueOf(payload.get("endTime"));
+        MemberDto member;
+        try {
+            member = memberService.findMember(String.valueOf(loginSession.getAttribute("loginId"))).get().toDto();
+            String startTime = String.valueOf(payload.get("startTime"));
+            String endTime = String.valueOf(payload.get("endTime"));
 
-        LocalDateTime startDateTime = LocalDateTime.parse(startTime, DateTimeFormatter.ISO_DATE_TIME);
-        LocalDateTime endDateTime = LocalDateTime.parse(endTime, DateTimeFormatter.ISO_DATE_TIME);
-        FocusSessionDto focusSession = FocusSessionDto.builder()
-                .member(member)
-                .startDateTime(startDateTime)
-                .endDateTime(endDateTime)
-                .build();
-        focusSessionService.save(focusSession.toEntity());
+            LocalDateTime startDateTimeKst = DateTimeUtils.parseIsoStringToKst(startTime);
+            LocalDateTime endDateTimeKst = DateTimeUtils.parseIsoStringToKst(endTime);
 
+            FocusSessionDto focusSession = FocusSessionDto.builder()
+                    .member(member)
+                    .startDateTime(startDateTimeKst)
+                    .endDateTime(endDateTimeKst)
+                    .build();
+            focusSessionService.save(focusSession.toEntity());
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping(value = "/api/focus-session/start")
+    public ResponseEntity<Object> startClock(HttpSession loginSession) {
+        // FocusStatus 변경
+
+        //
+        return ResponseEntity.ok().build();
+    }
 }
