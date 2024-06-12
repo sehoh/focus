@@ -23,16 +23,19 @@
         <div th:if="${session.loginId != null}">
             <p>
                 <a class="btn btn-lg btn-secondary"
-                   th:href="@{/members/mypage(id=${session.loginId})}">내 정보</a> <br/>
+                   th:href="@{/members/mypage(email=${session.loginId})}">내 정보</a> <br/>
                 <a class="btn btn-lg btn-secondary"
                    href="/members">회원 목록</a> <br/>
-                <a href="/members/logout">로그아웃</a>
+                <a href="#" onclick="logout()">로그아웃</a>
+<!--                        href="/members/logout">로그아웃</a>-->
                 <a href="/focussession/stopwatch">스탑워치</a>
             </p>
         </div>
     </div>
 
     <div th:replace="fragments/footer :: footer"></div>
+
+    <script type="text/javascript" th:src="@{/js/members/logout.js}"></script>
 
 </div> <!-- / container -->
 

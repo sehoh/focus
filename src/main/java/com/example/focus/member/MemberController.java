@@ -54,11 +54,10 @@ public class MemberController {
         }
         return path;
     }
-
-    @GetMapping(value = "/logout")
+    @PostMapping(value = "/members/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "index";
+        return "redirect:/";
     }
 
 
@@ -71,10 +70,11 @@ public class MemberController {
 
 
     @GetMapping(value = "/members/mypage")
-    public ModelAndView Mypage(Long memberId) {
-        MemberDto member = memberService.findMember(memberId).get().toDto();
+    public ModelAndView Mypage(String email, HttpSession loginSession) {
+//        MemberDto memberDto = memberService.findMember(String.valueOf(loginSession.getAttribute("loginId"))).get().toDto();
+        MemberDto memberDto = memberService.findMember(email).get().toDto();
         ModelAndView mav = new ModelAndView("members/detail");
-        mav.addObject("member", member);
+        mav.addObject("member", memberDto);
         return mav;
     }
 }

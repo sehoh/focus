@@ -1,6 +1,7 @@
 package com.example.focus.focussession;
 
 import com.example.focus.DateTimeUtils;
+import com.example.focus.focussession.dto.FocusSessionDto;
 import com.example.focus.member.MemberDto;
 import com.example.focus.member.MemberServiceImpl;
 import jakarta.servlet.http.HttpSession;
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,8 +43,10 @@ public class FocusSessionApiController {
                     .startDateTime(startDateTimeKst)
                     .endDateTime(endDateTimeKst)
                     .build();
-            focusSessionService.save(focusSession.toEntity());
+            focusSessionService.create(focusSession.toEntity());
 
+        } catch (NoSuchElementException e){
+            return ResponseEntity.status(404).body("Member Not Found");
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

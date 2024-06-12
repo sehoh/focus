@@ -1,6 +1,6 @@
 package com.example.focus.focussession;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.focus.focussession.domain.FocusSession;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,18 +15,17 @@ public class FocusSessionServiceImpl implements FocusSessionService{
     }
 
     @Override
-    public void save(FocusSession focusSession) {
+    public void create(FocusSession focusSession) {
         focusRepository.save(focusSession);
     }
 
-    // TODO :: JPQL SQL 작성
     @Override
     public Optional<FocusSession> findFocusSessionByMemberId(Long memberId) {
         return Optional.empty();
     }
 
     @Override
-    public List<FocusSession> findFocusSessions() {
+    public List<FocusSession> list() {
         return focusRepository.findAll();
     }
 }

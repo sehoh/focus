@@ -1,12 +1,14 @@
 package com.example.focus.focussession;
 
+import com.example.focus.focussession.domain.FocusSession;
+
 import java.util.List;
 import java.util.Optional;
 
 public interface FocusSessionService {
-    void save(FocusSession focusSession);
+    void create(FocusSession focusSession);
 
     Optional<FocusSession> findFocusSessionByMemberId(Long memberId);
 
-    List<FocusSession> findFocusSessions();
+    List<FocusSession> list();
 }

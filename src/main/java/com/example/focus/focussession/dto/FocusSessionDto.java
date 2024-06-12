@@ -1,6 +1,6 @@
-package com.example.focus.focussession;
+package com.example.focus.focussession.dto;
 
-import com.example.focus.member.Member;
+import com.example.focus.focussession.domain.FocusSession;
 import com.example.focus.member.MemberDto;
 import lombok.*;
 

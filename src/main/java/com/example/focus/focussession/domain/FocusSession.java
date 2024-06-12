@@ -1,5 +1,6 @@
-package com.example.focus.focussession;
+package com.example.focus.focussession.domain;
 
+import com.example.focus.focussession.dto.FocusSessionDto;
 import com.example.focus.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
