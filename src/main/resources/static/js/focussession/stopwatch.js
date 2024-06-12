@@ -61,7 +61,7 @@ function endClock() {
         url: "/api/focus-session/endclock",
         type: "POST",
         dataType: "JSON",
-        // contentType : "application/json",
+        contentType : "application/json",
         data : JSON.stringify({
             startTime : startIsoString,
             endTime: endIsoString}),
@@ -74,7 +74,6 @@ function endClock() {
 
         error: function (error) {
             console.log(error);
-            console.log("Error response text: ", error.responseText); // 응답 텍스트 로그 추가
             alert("등록 실패");
 
         },

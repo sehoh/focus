@@ -2,6 +2,7 @@ package com.example.focus.focussession;
 
 import com.example.focus.DateTimeUtils;
 import com.example.focus.focussession.dto.FocusSessionDto;
+import com.example.focus.focussession.service.FocusSessionServiceImpl;
 import com.example.focus.member.MemberDto;
 import com.example.focus.member.MemberServiceImpl;
 import jakarta.servlet.http.HttpSession;
@@ -46,11 +47,11 @@ public class FocusSessionApiController {
             focusSessionService.create(focusSession.toEntity());
 
         } catch (NoSuchElementException e){
-            return ResponseEntity.status(404).body("Member Not Found");
+            return ResponseEntity.status(404).body(Map.of("error", "Member Not Found"));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(400).body(Map.of("status", "badRequest"));
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(201).body(Map.of("status", "created"));
     }
 
     @PostMapping(value = "/api/focus-session/start")

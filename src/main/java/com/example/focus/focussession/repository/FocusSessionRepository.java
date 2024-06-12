@@ -1,4 +1,4 @@
-package com.example.focus.focussession;
+package com.example.focus.focussession.repository;
 
 import com.example.focus.focussession.domain.FocusSession;
 import org.springframework.data.jpa.repository.JpaRepository;

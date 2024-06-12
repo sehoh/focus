@@ -1,4 +1,4 @@
-package com.example.focus.focussession;
+package com.example.focus.focussession.service;
 
 import com.example.focus.focussession.domain.FocusSession;
 

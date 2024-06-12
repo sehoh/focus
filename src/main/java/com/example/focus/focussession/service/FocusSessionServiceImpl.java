@@ -1,6 +1,7 @@
-package com.example.focus.focussession;
+package com.example.focus.focussession.service;
 
 import com.example.focus.focussession.domain.FocusSession;
+import com.example.focus.focussession.repository.FocusSessionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
