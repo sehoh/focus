@@ -11,7 +11,6 @@ import static com.example.focus.member.UserType.USER;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,15 +25,26 @@ public class Member {
     private String pwd;
 
     @Enumerated(EnumType.STRING)
-    private LoginType loginType = LOCAL;
+    private LoginType loginType;
 
     private String nickname; // 사용자 지정 닉네임
 
     @Enumerated(EnumType.STRING)
-    private UserType userType = USER; // 관리자, 일반 계정 구분
+    private UserType userType; // 관리자, 일반 계정 구분
 
     @Enumerated(EnumType.STRING)
-    private FocusStatus focusStatus = NONE; // 집중 상태
+    private FocusStatus focusStatus; // 집중 상태
+
+    @Builder
+    public Member(String username, String email, String pwd, LoginType loginType, String nickname, UserType userType, FocusStatus focusStatus) {
+        this.username = username;
+        this.email = email;
+        this.pwd = pwd;
+        this.loginType = LOCAL;
+        this.nickname = nickname;
+        this.userType = USER;
+        this.focusStatus = NONE;
+    }
 
     public MemberDto toDto() {
         return MemberDto.builder()

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <meta charset="UTF-8">
+    <title>팝업창</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+
+<body>
+<div class="container">
+    <div style="margin: 100px">
+        <input placeholder="태그를 입력해주세요" id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
+               class="tagify-outside" aria-describedby="tagHelp"/>
+    </div>
+    <button id="submitTags">등록</button>
+</div>
+
+<!--<script type="text/javascript" th:src="@{/js/focussession/tag-input.js}"></script>-->
+<script type="module" th:src="@{/js/focussession/tag-input.js}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+<link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+<link href="/css/tag-dropdown.css" rel="stylesheet">
+
+
+</body>
+</html>

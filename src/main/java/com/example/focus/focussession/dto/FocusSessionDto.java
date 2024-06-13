@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class FocusSessionDto {
     private Long id;
@@ -19,7 +19,6 @@ public class FocusSessionDto {
 
     public FocusSession toEntity() {
         return FocusSession.builder()
-                .id(this.id)
                 .startDateTime(this.startDateTime)
                 .endDateTime(this.endDateTime)
                 .member(this.member.toEntity())

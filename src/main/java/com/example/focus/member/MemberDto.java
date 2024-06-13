@@ -20,7 +20,6 @@ public class MemberDto {
 
     public Member toEntity() {
         return Member.builder()
-                .id(this.id)
                 .username(this.username)
                 .email(this.email)
                 .pwd(this.pwd)

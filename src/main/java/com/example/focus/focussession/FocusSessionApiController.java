@@ -33,6 +33,8 @@ public class FocusSessionApiController {
         MemberDto member;
         try {
             member = memberService.findMember(String.valueOf(loginSession.getAttribute("loginId"))).get().toDto();
+
+            // TODO : refactor
             String startTime = String.valueOf(payload.get("startTime"));
             String endTime = String.valueOf(payload.get("endTime"));
 

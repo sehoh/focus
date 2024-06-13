@@ -20,11 +20,15 @@
             <button th:onclick="resetClock()">reset</button>
             <button th:onclick="endClock()">end</button>
         </div>
+        <div>
+            <button th:onclick="openTagPopup()">태그 입력</button>
+        </div>
     </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 
 <script type="text/javascript" th:src="@{/js/focussession/stopwatch.js}"></script>
+<script type="text/javascript" th:src="@{/js/focussession/tag-popup.js}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 

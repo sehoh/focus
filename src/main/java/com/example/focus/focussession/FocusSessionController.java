@@ -16,4 +16,12 @@ public class FocusSessionController {
     public void stopwatch() {
     }
 
+    // 게스트용
+    @GetMapping(value = "/focus-session/tag-popup")
+    public String showTagPopup() {
+        return "focussession/tag-popup";
+    }
+
+//    @GetMapping(value = "/focus-session/tag-popup/{memberId}")
+//    public
 }
