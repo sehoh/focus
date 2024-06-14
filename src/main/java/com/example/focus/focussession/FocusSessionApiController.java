@@ -2,16 +2,12 @@ package com.example.focus.focussession;
 
 import com.example.focus.DateTimeUtils;
 import com.example.focus.focussession.domain.FocusSession;
-import com.example.focus.focussession.dto.FocusSessionDto;
-import com.example.focus.focussession.service.FocusSessionService;
 import com.example.focus.focussession.service.FocusSessionServiceImpl;
 import com.example.focus.member.Member;
-import com.example.focus.member.MemberDto;
 import com.example.focus.member.MemberServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,14 +41,6 @@ public class FocusSessionApiController {
 
             LocalDateTime startDateTimeKst = DateTimeUtils.parseIsoStringToKst(startTime);
             LocalDateTime endDateTimeKst = DateTimeUtils.parseIsoStringToKst(endTime);
-
-            // Service에서 focusSessionDto -> entity를 받아서 생성
-//            FocusSessionDto focusSession = FocusSessionDto.builder()
-//                    .member(member)
-//                    .startDateTime(startDateTimeKst)
-//                    .endDateTime(endDateTimeKst)
-//                    .build();
-//            focusSessionService.create(focusSession.toEntity());
 
             // FocusSession entity에는 fk로 member_id가 들어감!
             focusSessionService.create(

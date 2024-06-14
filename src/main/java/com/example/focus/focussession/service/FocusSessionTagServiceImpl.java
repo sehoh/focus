@@ -3,12 +3,15 @@ package com.example.focus.focussession.service;
 import com.example.focus.focussession.domain.FocusSession;
 import com.example.focus.focussession.domain.FocusSessionTag;
 import com.example.focus.focussession.domain.Tag;
-import com.example.focus.focussession.dto.FocusSessionTagDto;
+import com.example.focus.focussession.dto.TagRequest;
 import com.example.focus.focussession.repository.FocusSessionRepository;
 import com.example.focus.focussession.repository.FocusSessionTagRepository;
 import com.example.focus.focussession.repository.TagRepository;
+import com.example.focus.member.Member;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,15 +26,39 @@ public class FocusSessionTagServiceImpl implements FocusSessionTagService{
         this.focusSessionRepository = focusSessionRepository;
     }
 
-    // 태그 생성(이미 있으면 그대로, 없으면 저장)
-    public void create(FocusSessionTagDto focusSessionTagDto) {
-        FocusSession focusSession = focusSessionRepository.save(focusSessionTagDto.getFocusSession());
-        // TODO : Tag는 save메서드의 merge가 되면 안됨!
-        Tag tag = tagRepository.save(focusSessionTagDto.getTag());
-        focusTagRepository.save(
-                FocusSessionTag.builder().
-                        focusSession(focusSession).
-                        tag(tag).build());
+
+    // 테스트용 태그 추가
+    public void createTest(TagRequest tagRequest, Member member) {
+        // 1 태그 등록
+//        Tag tag = tagRepository.save(focusSessionTag.getTag());
+        List<Tag> tags = new ArrayList<>();
+        for (String tag : tagRequest.getTags()) {
+            tags.add(
+                    tagRepository.save(Tag.builder()
+                    .name(tag)
+                    .created(LocalDate.now()).build()));
+        }
+
+        /*
+        각 태그에 대한 entity 정보들을 집중세션태그 등록시에 사용되어져야 함!
+         */
+
+        // 2 집중세션 등록
+        FocusSession focusSession = focusSessionRepository.save(FocusSession.builder()
+                .member(member)
+                .startDateTime(tagRequest.getStartDateTime())
+                .endDateTime(tagRequest.getEndDateTime()).build());
+
+       /*
+       * 집중세션에 대한 entity 정보를 집중세션태그 등록시에 사용되어저야 함!
+       * */
+        // 3 집중세션태그 등록
+        for (Tag tag : tags) {
+            focusTagRepository.save(FocusSessionTag.builder()
+                    .tag(tag)
+                    .focusSession(focusSession).build());
+        }
+
     }
 
     @Override
