@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 public class FocusSession {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,18 +25,12 @@ public class FocusSession {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @Builder
-    public FocusSession(LocalDateTime startDateTime, LocalDateTime endDateTime, Member member) {
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
-        this.member = member;
-    }
-
     public FocusSessionDto toDto() {
         return FocusSessionDto.builder()
                 .id(this.id)
                 .startDateTime(this.startDateTime)
                 .endDateTime(this.endDateTime)
+                .member(this.member.toDto())
                 .build();
     }
 }

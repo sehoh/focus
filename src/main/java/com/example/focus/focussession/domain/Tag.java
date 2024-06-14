@@ -10,6 +10,8 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 public class Tag implements Persistable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +28,4 @@ public class Tag implements Persistable<Long> {
         return created == null;
     }
 
-    @Builder
-    public Tag(String name, LocalDate created) {
-        this.name = name;
-        this.created = created;
-    }
 }

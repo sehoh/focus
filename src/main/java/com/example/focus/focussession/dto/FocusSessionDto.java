@@ -7,7 +7,6 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -19,6 +18,7 @@ public class FocusSessionDto {
 
     public FocusSession toEntity() {
         return FocusSession.builder()
+                .id(this.id)
                 .startDateTime(this.startDateTime)
                 .endDateTime(this.endDateTime)
                 .member(this.member.toEntity())
