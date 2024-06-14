@@ -1,10 +1,15 @@
 package com.example.focus.focussession.service;
 
+import com.example.focus.DateTimeUtils;
 import com.example.focus.focussession.domain.FocusSession;
+import com.example.focus.focussession.dto.FocusSessionDto;
 import com.example.focus.focussession.repository.FocusSessionRepository;
+import com.example.focus.member.MemberDto;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service

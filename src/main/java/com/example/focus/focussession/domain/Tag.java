@@ -1,5 +1,6 @@
 package com.example.focus.focussession.domain;
 
+import com.example.focus.focussession.dto.TagDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -26,6 +27,13 @@ public class Tag implements Persistable<Long> {
     @Override
     public boolean isNew() {
         return created == null;
+    }
+
+    public TagDto toDto() {
+        return TagDto.builder()
+                .id(this.id)
+                .name(this.name)
+                .created(this.created).build();
     }
 
 }

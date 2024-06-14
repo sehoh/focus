@@ -1,5 +1,6 @@
 package com.example.focus.focussession.domain;
 
+import com.example.focus.focussession.dto.FocusSessionTagDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,5 +21,12 @@ public class FocusSessionTag { // FocusSession과 Tag의 다대다 관계 매핑
     @ManyToOne
     @JoinColumn(name = "tag_id")
     private Tag tag;
+
+    public FocusSessionTagDto toDto() {
+        return FocusSessionTagDto.builder()
+                .id(this.id)
+                .focusSessionDto(focusSession.toDto())
+                .tagDto(this.tag.toDto()).build();
+    }
 
 }

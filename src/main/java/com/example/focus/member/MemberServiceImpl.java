@@ -1,5 +1,6 @@
 package com.example.focus.member;
 
+import com.example.focus.exception.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,5 +32,11 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public Optional<Member> findMemberByEmail(String email) {
         return memberRepository.findByEmail(email);
+    }
+
+    public MemberDto findMemberDtoByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .map(Member::toDto)
+                .orElseThrow(() -> new BadRequestException("Member not found with email: "+ email));
     }
 }

@@ -3,7 +3,7 @@ package com.example.focus.focussession;
 import com.example.focus.DateTimeUtils;
 import com.example.focus.focussession.domain.FocusSession;
 import com.example.focus.focussession.service.FocusSessionServiceImpl;
-import com.example.focus.member.Member;
+import com.example.focus.member.MemberDto;
 import com.example.focus.member.MemberServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -29,25 +29,22 @@ public class FocusSessionApiController {
     @PostMapping(value = "/api/focus-session/endclock")
     public ResponseEntity<Object> endClock(@RequestBody Map<String, String> payload,
                                            HttpSession loginSession) {
-        // TODO :: NULL check
         try {
-            // 단순조회이므로 entity로 가져옴
-            Member member = memberService.findMemberByEmail(String.valueOf(loginSession.getAttribute("loginId"))).get();
+            String email = String.valueOf(loginSession.getAttribute("loginId"));
+            MemberDto memberDto = memberService.findMemberDtoByEmail(email);
 
-
-            // TODO : refactor
             String startTime = String.valueOf(payload.get("startTime"));
             String endTime = String.valueOf(payload.get("endTime"));
 
             LocalDateTime startDateTimeKst = DateTimeUtils.parseIsoStringToKst(startTime);
             LocalDateTime endDateTimeKst = DateTimeUtils.parseIsoStringToKst(endTime);
 
-            // FocusSession entity에는 fk로 member_id가 들어감!
+
             focusSessionService.create(
                     FocusSession.builder()
                             .startDateTime(startDateTimeKst)
                             .endDateTime(endDateTimeKst)
-                            .member(member).build());
+                            .member(memberDto.toEntity()).build());
 
         } catch (NoSuchElementException e){
             return ResponseEntity.status(404).body(Map.of("error", "Member Not Found"));

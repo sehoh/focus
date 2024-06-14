@@ -3,7 +3,7 @@ package com.example.focus.focussession;
 import com.example.focus.focussession.dto.TagRequest;
 import com.example.focus.focussession.service.FocusSessionServiceImpl;
 import com.example.focus.focussession.service.FocusSessionTagServiceImpl;
-import com.example.focus.member.Member;
+import com.example.focus.member.MemberDto;
 import com.example.focus.member.MemberServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -30,17 +30,14 @@ public class TagApiController {
                                            HttpSession loginSession) {
         List<String> tags = tagRequest.getTags();
 
-        for (String tag : tags) {
-            System.out.println(tag);
-        }
-
         if (tags == null || tags.isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("status", "error", "message", "Tags cannot be empty"));
         }
+        String email = String.valueOf(loginSession.getAttribute("loginId"));
 
-        Member member = memberService.findMemberByEmail(String.valueOf(loginSession.getAttribute("loginId"))).get();
-        focusSessionTagService.createTest(tagRequest, member);
+        MemberDto memberDto = memberService.findMemberDtoByEmail(email);
 
+        focusSessionTagService.createByTagRequest(tagRequest, memberDto);
 
         return ResponseEntity.status(200).body(Map.of("status", "created"));
     }
