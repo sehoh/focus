@@ -44,7 +44,7 @@ public class MemberController {
     public String login(String email, String pwd, HttpSession session) {
         String path = "members/login";
         try {
-            MemberDto member = memberService.findMember(email).get().toDto();
+            MemberDto member = memberService.findMemberByEmail(email).get().toDto();
             if (member.getPwd().equals(pwd)) {
                 session.setAttribute("loginId", email);
                 path = "home";
@@ -72,7 +72,7 @@ public class MemberController {
     @GetMapping(value = "/members/mypage")
     public ModelAndView Mypage(String email, HttpSession loginSession) {
 //        MemberDto memberDto = memberService.findMember(String.valueOf(loginSession.getAttribute("loginId"))).get().toDto();
-        MemberDto memberDto = memberService.findMember(email).get().toDto();
+        MemberDto memberDto = memberService.findMemberByEmail(email).get().toDto();
         ModelAndView mav = new ModelAndView("members/detail");
         mav.addObject("member", memberDto);
         return mav;

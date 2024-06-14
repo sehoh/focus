@@ -8,7 +8,7 @@ public interface MemberService {
 
     Optional<Member> findMember(Long memberId);
 
-    Optional<Member> findMember(String email);
+    Optional<Member> findMemberByEmail(String email);
 
     List<Member> findMembers();
 }

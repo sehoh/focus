@@ -9,7 +9,6 @@ import static com.example.focus.member.UserType.USER;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
     @Id

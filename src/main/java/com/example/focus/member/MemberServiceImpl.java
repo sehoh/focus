@@ -29,7 +29,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Optional<Member> findMember(String email) {
+    public Optional<Member> findMemberByEmail(String email) {
         return memberRepository.findByEmail(email);
     }
 }

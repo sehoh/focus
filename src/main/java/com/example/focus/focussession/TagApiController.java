@@ -41,7 +41,7 @@ public class TagApiController {
             return ResponseEntity.badRequest().body(Map.of("status", "error", "message", "Tags cannot be empty"));
         }
 
-        MemberDto memberDto = memberService.findMember(String.valueOf(loginSession.getAttribute("loginId"))).get().toDto();
+        MemberDto memberDto = memberService.findMemberByEmail(String.valueOf(loginSession.getAttribute("loginId"))).get().toDto();
         System.out.println("멤버" + memberDto);
         System.out.println("멤버 이름" + memberDto.getEmail());
 
