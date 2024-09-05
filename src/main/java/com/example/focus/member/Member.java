@@ -48,4 +48,11 @@ public class Member {
                 .focusStatus(this.focusStatus)
                 .build();
     }
+
+    @PrePersist
+    public void prePersist() {
+        this.loginType = LOCAL;
+        this.userType = USER;
+        this.focusStatus = NONE;
+    }
 }
