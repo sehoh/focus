@@ -1,5 +1,7 @@
 package com.example.focus.member;
 
+import com.example.focus.focussession.domain.FocusSession;
+import com.example.focus.focussession.service.FocusSessionServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -18,6 +21,7 @@ import java.util.NoSuchElementException;
 @Slf4j
 public class MemberController {
     private final MemberServiceImpl memberService;
+    private final FocusSessionServiceImpl focusSessionService;
 
     @GetMapping("/members/new")
     public String createForm(Model model) {
@@ -54,6 +58,7 @@ public class MemberController {
         }
         return path;
     }
+
     @PostMapping(value = "/members/logout")
     public String logout(HttpSession session) {
         session.invalidate();
@@ -69,12 +74,22 @@ public class MemberController {
     }
 
 
+//    @GetMapping(value = "/members/mypage")
+//    public ModelAndView Mypage(String email, HttpSession loginSession) {
+////        MemberDto memberDto = memberService.findMember(String.valueOf(loginSession.getAttribute("loginId"))).get().toDto();
+//        MemberDto memberDto = memberService.findMemberByEmail(email).get().toDto();
+//        ModelAndView mav = new ModelAndView("members/detail");
+//        mav.addObject("member", memberDto);
+//        return mav;
+//    }
+    //ToDO
     @GetMapping(value = "/members/mypage")
-    public ModelAndView Mypage(String email, HttpSession loginSession) {
-//        MemberDto memberDto = memberService.findMember(String.valueOf(loginSession.getAttribute("loginId"))).get().toDto();
+    public ModelAndView myPageStatistics(@RequestParam String email) {
         MemberDto memberDto = memberService.findMemberByEmail(email).get().toDto();
-        ModelAndView mav = new ModelAndView("members/detail");
-        mav.addObject("member", memberDto);
+//        List<FocusSession> focusSessions = focusSessionService.findFocusSessionsByMemberId(memberDto.getId());
+        List<FocusSession> focusSessions = null;
+        ModelAndView mav = new ModelAndView("members/mypage");
+        mav.addObject("focusSessions", focusSessions);
         return mav;
     }
 }

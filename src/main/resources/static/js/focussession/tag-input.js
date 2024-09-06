@@ -1,6 +1,7 @@
 var urlParams = new URLSearchParams(window.location.search);
 var start = urlParams.get('start');
 var end = urlParams.get('end');
+var email = urlParams.get('email');
 
 var tagInput = document.querySelector("#tags");
 
@@ -27,7 +28,8 @@ function sendTagsToServer() {
     var tagData = {
         tags: tags,
         startDateTime : start,
-        endDateTime : end
+        endDateTime : end,
+        email : email
     };
 
     $.ajax({

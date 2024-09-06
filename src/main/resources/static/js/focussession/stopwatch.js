@@ -4,6 +4,8 @@ const stopwatch = document.getElementById("stopwatch");
 let hour, min, sec;
 
 let startTime, endTime;
+let urlParams = new URLSearchParams(window.location.search);
+let email = urlParams.get('email');
 
 // 시간(int)을 시, 분, 초 문자열로 변환
 function getTimeFormatString() {
@@ -64,7 +66,9 @@ function endClock() {
         contentType : "application/json",
         data : JSON.stringify({
             startTime : startIsoString,
-            endTime: endIsoString}),
+            endTime: endIsoString,
+            email : email
+        }),
 
         success : function (jsonData){
             alert("등록 성공");

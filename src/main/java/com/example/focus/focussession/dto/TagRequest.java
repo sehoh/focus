@@ -11,6 +11,7 @@ public class TagRequest {
     private List<String> tags;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
+    private String email;
 
     public FocusSessionDto toFocusSessionDto(MemberDto memberDto) {
         return FocusSessionDto.builder()

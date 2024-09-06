@@ -33,8 +33,8 @@ public class TagApiController {
         if (tags == null || tags.isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("status", "error", "message", "Tags cannot be empty"));
         }
-        String email = String.valueOf(loginSession.getAttribute("loginId"));
-
+//        String email = String.valueOf(loginSession.getAttribute("loginId"));
+        String email = String.valueOf(tagRequest.getEmail());
         MemberDto memberDto = memberService.findMemberDtoByEmail(email);
 
         focusSessionTagService.createByTagRequest(tagRequest, memberDto);

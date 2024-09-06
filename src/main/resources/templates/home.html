@@ -28,7 +28,9 @@
                    href="/members">회원 목록</a> <br/>
                 <a href="#" onclick="logout()">로그아웃</a>
 <!--                        href="/members/logout">로그아웃</a>-->
-                <a href="/focussession/stopwatch">스탑워치</a>
+<!--                <a href="/focussession/stopwatch">스탑워치</a>-->
+                <a class="btn btn-lg btn-secondary"
+                   th:href="@{/focussession/stopwatch(email=${session.loginId})}"> 스탑워치</a>
             </p>
         </div>
     </div>

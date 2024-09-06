@@ -30,11 +30,12 @@ public class FocusSessionApiController {
     public ResponseEntity<Object> endClock(@RequestBody Map<String, String> payload,
                                            HttpSession loginSession) {
         try {
-            String email = String.valueOf(loginSession.getAttribute("loginId"));
-            MemberDto memberDto = memberService.findMemberDtoByEmail(email);
+//            String email = String.valueOf(loginSession.getAttribute("loginId"));
 
             String startTime = String.valueOf(payload.get("startTime"));
             String endTime = String.valueOf(payload.get("endTime"));
+            String email = String.valueOf(payload.get("email"));
+            MemberDto memberDto = memberService.findMemberDtoByEmail(email);
 
             LocalDateTime startDateTimeKst = DateTimeUtils.parseIsoStringToKst(startTime);
             LocalDateTime endDateTimeKst = DateTimeUtils.parseIsoStringToKst(endTime);

@@ -11,6 +11,29 @@
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
 
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>이름</th>
+                <th>오늘 총 공부시간</th>
+                <th>주간 총 공부시간</th>
+                <th>월간 총 공부시간</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="focusSession : ${focusSessions}">
+                <td th:text="${focusSession.id}"></td>
+                <td th:text="test"></td>
+                <td th:text="${focusSession.startDateTime}"></td>
+                <td th:text="${focusSession.endDateTime}"></td>
+                <td th:text="test"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 
