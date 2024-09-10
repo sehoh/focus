@@ -1,6 +1,7 @@
 package com.example.focus.member;
 
 import com.example.focus.focussession.domain.FocusSession;
+import com.example.focus.focussession.dto.CumulativeTimeDto;
 import com.example.focus.focussession.service.FocusSessionServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -82,14 +83,13 @@ public class MemberController {
 //        mav.addObject("member", memberDto);
 //        return mav;
 //    }
-    //ToDO
     @GetMapping(value = "/members/mypage")
     public ModelAndView myPageStatistics(@RequestParam String email) {
         MemberDto memberDto = memberService.findMemberByEmail(email).get().toDto();
-//        List<FocusSession> focusSessions = focusSessionService.findFocusSessionsByMemberId(memberDto.getId());
-        List<FocusSession> focusSessions = null;
+        List<CumulativeTimeDto> cumulativeTimes = focusSessionService.findCumulativeTimeByDateAndMemberId(memberDto.getId());
+
         ModelAndView mav = new ModelAndView("members/mypage");
-        mav.addObject("focusSessions", focusSessions);
+        mav.addObject("cumulativeTimes", cumulativeTimes);
         return mav;
     }
 }

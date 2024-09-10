@@ -15,20 +15,14 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>#</th>
-                <th>이름</th>
-                <th>오늘 총 공부시간</th>
-                <th>주간 총 공부시간</th>
-                <th>월간 총 공부시간</th>
+                <th>날짜</th>
+                <th>누적공부시간</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="focusSession : ${focusSessions}">
-                <td th:text="${focusSession.id}"></td>
-                <td th:text="test"></td>
-                <td th:text="${focusSession.startDateTime}"></td>
-                <td th:text="${focusSession.endDateTime}"></td>
-                <td th:text="test"></td>
+            <tr th:each="cumulativeTime : ${cumulativeTimes}">
+                <td th:text="${cumulativeTime.date}"></td>
+                <td th:text="${cumulativeTime.cumulativeTimeDiff}"></td>
             </tr>
             </tbody>
         </table>

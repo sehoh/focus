@@ -2,6 +2,7 @@ package com.example.focus.focussession.service;
 
 import com.example.focus.DateTimeUtils;
 import com.example.focus.focussession.domain.FocusSession;
+import com.example.focus.focussession.dto.CumulativeTimeDto;
 import com.example.focus.focussession.dto.FocusSessionDto;
 import com.example.focus.focussession.repository.FocusSessionRepository;
 import com.example.focus.member.MemberDto;
@@ -28,6 +29,10 @@ public class FocusSessionServiceImpl implements FocusSessionService{
     @Override
     public Optional<FocusSession> findFocusSessionByMemberId(Long memberId) {
         return Optional.empty();
+    }
+
+    public List<CumulativeTimeDto> findCumulativeTimeByDateAndMemberId(Long memberId) {
+        return focusRepository.findCumulativeTimeByDateAndMemberId(memberId);
     }
 
     @Override
