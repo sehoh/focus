@@ -3,6 +3,7 @@ package com.example.focus.member;
 import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
