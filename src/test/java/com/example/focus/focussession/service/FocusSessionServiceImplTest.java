@@ -1,6 +1,7 @@
 package com.example.focus.focussession.service;
 
 import com.example.focus.focussession.dto.CumulativeTimeDto;
+import com.example.focus.focussession.dto.CumulativeWeekTimeDto;
 import com.example.focus.focussession.repository.FocusSessionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,19 @@ class FocusSessionServiceImplTest {
         System.out.println("rs = " + rs);
         assertThat(rs.get(0).getDate()).isNotNull();
         assertThat(rs.get(0).getCumulativeTimeDiff()).isGreaterThan(0L);
+
+    }
+    // TODO : 테스트 코드 어떻게?
+    @Test
+    void cumulativeWeekTimeByWeekTest() {
+        Long memberId = 1L;
+        List<CumulativeWeekTimeDto> rs = focusSessionRepository.findCumulativeTimeByWeekAndMemberId(memberId);
+
+        assertThat(rs).isNotEmpty();
+
+        CumulativeWeekTimeDto thisWeek = rs.get(0);
+
+
 
     }
 }

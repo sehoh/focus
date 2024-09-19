@@ -1,6 +1,5 @@
 package com.example.focus.member;
 
-import com.example.focus.focussession.domain.FocusSession;
 import com.example.focus.focussession.dto.CumulativeTimeDto;
 import com.example.focus.focussession.service.FocusSessionServiceImpl;
 import jakarta.servlet.http.HttpSession;

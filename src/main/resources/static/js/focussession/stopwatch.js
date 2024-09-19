@@ -72,8 +72,8 @@ function endClock() {
 
         success : function (jsonData){
             alert("등록 성공");
-            console.log(startIsoString);
-            console.log(endIsoString);
+            // console.log(startIsoString);
+            // console.log(endIsoString);
         },
 
         error: function (error) {
