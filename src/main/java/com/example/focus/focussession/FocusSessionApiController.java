@@ -2,6 +2,7 @@ package com.example.focus.focussession;
 
 import com.example.focus.DateTimeUtils;
 import com.example.focus.focussession.domain.FocusSession;
+import com.example.focus.focussession.dto.CumulativeWeekTimeDto;
 import com.example.focus.focussession.service.FocusSessionServiceImpl;
 import com.example.focus.member.MemberDto;
 import com.example.focus.member.MemberServiceImpl;
@@ -9,11 +10,11 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -61,5 +62,13 @@ public class FocusSessionApiController {
 
         //
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/api/focus-session/weeks/{email}")
+    public ResponseEntity<List<CumulativeWeekTimeDto>> myPageWeekStatistics(@PathVariable("email") String email) {
+        MemberDto memberDto = memberService.findMemberByEmail(email).get().toDto();
+        List<CumulativeWeekTimeDto> cumulativeWeekTimes = focusSessionService.findCumulativeWeekTimeByWeekAndMemberId(memberDto.getId());
+
+        return ResponseEntity.ok(cumulativeWeekTimes);
     }
 }
