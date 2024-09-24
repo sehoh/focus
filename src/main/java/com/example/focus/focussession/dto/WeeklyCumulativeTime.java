@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
-public class CumulativeWeekTimeDto {
+public class WeeklyCumulativeTime {
     private LocalDate weekStart;
     private LocalDate weekEnd;
     private Long cumulativeTimeDiff;

@@ -1,15 +1,18 @@
 package com.example.focus.focussession.repository;
 
-import com.example.focus.focussession.dto.CumulativeTimeDto;
-import com.example.focus.focussession.dto.CumulativeWeekTimeDto;
+import com.example.focus.focussession.dto.DailyCumulativeTime;
+import com.example.focus.focussession.dto.MonthlyCumulativeTime;
+import com.example.focus.focussession.dto.WeeklyCumulativeTime;
 
 import java.util.List;
 
 public interface FocusSessionRepositoryCustom {
 
-    List<CumulativeTimeDto> findCumulativeTimeByDate();
+    List<DailyCumulativeTime> findCumulativeTimeByDate();
 
-    List<CumulativeTimeDto> findCumulativeTimeByDateAndMemberId(Long memberId);
+    List<DailyCumulativeTime> findCumulativeTimeByDateAndMemberId(Long memberId);
 
-    List<CumulativeWeekTimeDto> findCumulativeTimeByWeekAndMemberId(Long memberId);
+    List<WeeklyCumulativeTime> findCumulativeTimeByWeekAndMemberId(Long memberId);
+
+    List<MonthlyCumulativeTime> findCumulativeTimeByMonthAndMemberId(Long memberId);
 }

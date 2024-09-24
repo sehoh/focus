@@ -1,7 +1,8 @@
 package com.example.focus.focussession.repository;
 
-import com.example.focus.focussession.dto.CumulativeTimeDto;
-import com.example.focus.focussession.dto.CumulativeWeekTimeDto;
+import com.example.focus.focussession.dto.DailyCumulativeTime;
+import com.example.focus.focussession.dto.MonthlyCumulativeTime;
+import com.example.focus.focussession.dto.WeeklyCumulativeTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,7 +20,7 @@ public class FocusSessionRepositoryImpl implements FocusSessionRepositoryCustom 
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<CumulativeTimeDto> findCumulativeTimeByDate() {
+    public List<DailyCumulativeTime> findCumulativeTimeByDate() {
         String sql = "SELECT " +
                 "DATE(start_date_time) as date, " +
                 "SUM(TIMESTAMPDIFF(SECOND, start_date_time, end_date_time)) as cumulative_time_diff " +
@@ -31,7 +32,7 @@ public class FocusSessionRepositoryImpl implements FocusSessionRepositoryCustom 
     }
 
     @Override
-    public List<CumulativeTimeDto> findCumulativeTimeByDateAndMemberId(Long memberId) {
+    public List<DailyCumulativeTime> findCumulativeTimeByDateAndMemberId(Long memberId) {
         String sql = "SELECT " +
                 "DATE(start_date_time) as date, " +
                 "SUM(TIMESTAMPDIFF(SECOND, start_date_time, end_date_time)) as cumulative_time_diff " +
@@ -43,18 +44,18 @@ public class FocusSessionRepositoryImpl implements FocusSessionRepositoryCustom 
         return jdbcTemplate.query(sql, new Object[]{memberId}, new CumulativeTimeRowMapper());
     }
 
-    private static class CumulativeTimeRowMapper implements RowMapper<CumulativeTimeDto> {
+    private static class CumulativeTimeRowMapper implements RowMapper<DailyCumulativeTime> {
         @Override
-        public CumulativeTimeDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+        public DailyCumulativeTime mapRow(ResultSet rs, int rowNum) throws SQLException {
             LocalDate date = rs.getDate("date").toLocalDate();
             Long cumulativeTimeDiff = rs.getLong("cumulative_time_diff");
 
-            return new CumulativeTimeDto(date, cumulativeTimeDiff);
+            return new DailyCumulativeTime(date, cumulativeTimeDiff);
         }
     }
 
     @Override
-    public List<CumulativeWeekTimeDto> findCumulativeTimeByWeekAndMemberId(Long memberId) {
+    public List<WeeklyCumulativeTime> findCumulativeTimeByWeekAndMemberId(Long memberId) {
         String sql = "WITH RECURSIVE weeks AS (" +
                 "    SELECT " +
                 "        DATE(CONCAT(YEAR(CURDATE()), '-01-01')) AS start_of_week, " +
@@ -81,15 +82,53 @@ public class FocusSessionRepositoryImpl implements FocusSessionRepositoryCustom 
         return jdbcTemplate.query(sql, new Object[]{memberId}, new CumulativeWeekTimeRowMapper());
     }
 
-    private static class CumulativeWeekTimeRowMapper implements RowMapper<CumulativeWeekTimeDto> {
+    private static class CumulativeWeekTimeRowMapper implements RowMapper<WeeklyCumulativeTime> {
         @Override
-        public CumulativeWeekTimeDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+        public WeeklyCumulativeTime mapRow(ResultSet rs, int rowNum) throws SQLException {
             LocalDate weekStart = rs.getDate("week_start").toLocalDate();
             LocalDate weekEnd = rs.getDate("week_end").toLocalDate();
             Long cumulativeTimeDiff = rs.getLong("cumulative_time_diff");
 
-            return new CumulativeWeekTimeDto(weekStart, weekEnd, cumulativeTimeDiff);
+            return new WeeklyCumulativeTime(weekStart, weekEnd, cumulativeTimeDiff);
         }
     }
 
+    @Override
+    public List<MonthlyCumulativeTime> findCumulativeTimeByMonthAndMemberId(Long memberId) {
+        String sql = "WITH RECURSIVE months AS (" +
+                "    SELECT " +
+                "        DATE(CONCAT(YEAR(CURDATE()), '-01-01')) AS start_of_month, " +
+                "        LAST_DAY(DATE(CONCAT(YEAR(CURDATE()), '-01-01'))) AS end_of_month " +
+                "    UNION ALL " +
+                "    SELECT " +
+                "        DATE_ADD(start_of_month, INTERVAL 1 MONTH), " +
+                "        LAST_DAY(DATE_ADD(start_of_month, INTERVAL 1 MONTH)) " +
+                "    FROM months " +
+                "    WHERE start_of_month < DATE(CONCAT(YEAR(CURDATE()), '-', LPAD(MONTH(CURDATE()), 2, '0'), '-01')) " +
+                ") " +
+                "SELECT " +
+                "    m.start_of_month AS month_start, " +
+                "    m.end_of_month AS month_end, " +
+                "    IFNULL(SUM(TIMESTAMPDIFF(SECOND, fs.start_date_time, fs.end_date_time)), 0) AS cumulative_time_diff " +
+                "FROM months m " +
+                "LEFT JOIN focus_session fs " +
+                "ON fs.start_date_time >= m.start_of_month " +
+                "AND fs.start_date_time < DATE_ADD(m.end_of_month, INTERVAL 1 DAY) " +
+                "AND fs.member_id = ? " +
+                "GROUP BY m.start_of_month, m.end_of_month " +
+                "ORDER BY m.start_of_month DESC";
+
+        return jdbcTemplate.query(sql, new Object[]{memberId}, new CumulativeMonthTimeRowMapper());
+    }
+
+    private static class CumulativeMonthTimeRowMapper implements RowMapper<MonthlyCumulativeTime> {
+        @Override
+        public MonthlyCumulativeTime mapRow(ResultSet rs, int rowNum) throws SQLException {
+            LocalDate monthStart = rs.getDate("month_start").toLocalDate();
+            LocalDate monthEnd = rs.getDate("month_end").toLocalDate();
+            Long cumulativeTimeDiff = rs.getLong("cumulative_time_diff");
+
+            return new MonthlyCumulativeTime(monthStart, monthEnd, cumulativeTimeDiff);
+        }
+    }
 }

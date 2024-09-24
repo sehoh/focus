@@ -2,9 +2,13 @@ package com.example.focus.member;
 
 import com.example.focus.exception.BadRequestException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.example.focus.member.FocusStatus.FOCUS;
+import static com.example.focus.member.FocusStatus.NONE;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -30,13 +34,21 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Optional<Member> findMemberByEmail(String email) {
-        return memberRepository.findByEmail(email);
+    public Member findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new BadRequestException("Member not found with email"));
     }
 
     public MemberDto findMemberDtoByEmail(String email) {
         return memberRepository.findByEmail(email)
                 .map(Member::toDto)
                 .orElseThrow(() -> new BadRequestException("Member not found with email: "+ email));
+    }
+
+    @Override
+    @Transactional
+    public void updateFocusStatus(String email, FocusStatus focusStatus) {
+        Member member = findMemberByEmail(email);
+        member.updateStatus(focusStatus);
     }
 }

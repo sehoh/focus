@@ -55,4 +55,8 @@ public class Member {
         this.userType = USER;
         this.focusStatus = NONE;
     }
+
+    public void updateStatus(FocusStatus focusStatus) {
+        this.focusStatus = focusStatus;
+    }
 }

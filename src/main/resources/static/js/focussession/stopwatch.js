@@ -44,6 +44,27 @@ function startClock() {
     console.log("시작시각" + startTime);
     setInterval();
     // timerId = setTimeout(startClock, 1000);
+    startRequest();
+}
+
+function startRequest() {
+    $.ajax({
+        url: "/api/focus-session/start",
+        type : "POST",
+        dataType: "JSON",
+        contentType : "application/json",
+        data : JSON.stringify({
+            email : email
+        }),
+
+        success: function (jsonData) {
+            // 내 상태 표시
+        },
+
+        error: function (error) {
+            console.log(error);
+        },
+    })
 }
 
 function resetClock() {

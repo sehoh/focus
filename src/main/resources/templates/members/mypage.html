@@ -11,7 +11,9 @@
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
     <div class="mb-3">
-        <button type="button" class="btn btn-primary" th:onclick="fetchWeeklyStudyTime()">주간 공부시간</button>
+        <button type="button" class="btn btn-primary" th:onclick="fetchDailyFocusTime()">일일 집중시간</button>
+        <button type="button" class="btn btn-secondary" th:onclick="fetchWeeklyFocusTime()">주간 집중시간</button>
+        <button type="button" class="btn btn-third" th:onclick="fetchMonthlyFocusTime()">월간 집중시간</button>
     </div>
 <!--    일별 누적시간-->
     <div>
@@ -22,7 +24,7 @@
                 <th>누적공부시간</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="dailyTimeTableBody">
             <tr th:each="cumulativeTime : ${cumulativeTimes}">
                 <td th:text="${cumulativeTime.date}"></td>
                 <td th:text="${cumulativeTime.cumulativeTimeDiff}"></td>
@@ -32,7 +34,7 @@
     </div>
 <!--    주별 누적시간-->
     <div>
-        <table class="table table-striped" id="weeklyTimeTable" style="display:none;">
+        <table class="table table-striped" id="weeklyTimeTable" style="display: none">
             <thead>
             <tr>
                 <th>시작일</th>
@@ -46,10 +48,25 @@
         </table>
     </div>
 
+    <div>
+        <table class="table table-striped" id="monthlyTimeTable" style="display: none">
+            <thead>
+            <tr>
+                <th>시작일</th>
+                <th>종료일</th>
+                <th>누적시간</th>
+            </tr>
+            </thead>
+            <tbody id="monthlyTimeTableBody">
+
+            </tbody>
+        </table>
+    </div>
+
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 
-<script type="text/javascript" th:src="@{/js/focussession/week-statistic.js}"></script>
+<script type="text/javascript" th:src="@{/js/focussession/statistic.js}"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 

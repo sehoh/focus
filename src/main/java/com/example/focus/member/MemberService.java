@@ -8,7 +8,9 @@ public interface MemberService {
 
     Optional<Member> findMember(Long memberId);
 
-    Optional<Member> findMemberByEmail(String email);
+    Member findMemberByEmail(String email);
 
     List<Member> findMembers();
+
+    void updateFocusStatus(String email, FocusStatus focusStatus);
 }

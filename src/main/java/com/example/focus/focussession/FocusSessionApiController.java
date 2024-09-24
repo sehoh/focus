@@ -2,7 +2,10 @@ package com.example.focus.focussession;
 
 import com.example.focus.DateTimeUtils;
 import com.example.focus.focussession.domain.FocusSession;
-import com.example.focus.focussession.dto.CumulativeWeekTimeDto;
+import com.example.focus.focussession.dto.MonthlyCumulativeTime;
+import com.example.focus.focussession.dto.DailyCumulativeTime;
+import com.example.focus.focussession.dto.WeeklyCumulativeTime;
+import com.example.focus.focussession.dto.EmailInfo;
 import com.example.focus.focussession.service.FocusSessionServiceImpl;
 import com.example.focus.member.MemberDto;
 import com.example.focus.member.MemberServiceImpl;
@@ -11,12 +14,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
+import static com.example.focus.member.FocusStatus.*;
+import static com.example.focus.member.FocusStatus.FOCUS;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,27 +53,45 @@ public class FocusSessionApiController {
                             .endDateTime(endDateTimeKst)
                             .member(memberDto.toEntity()).build());
 
-        } catch (NoSuchElementException e){
+            memberService.updateFocusStatus(email, NONE);
+
+        } catch (NoSuchElementException e) {
             return ResponseEntity.status(404).body(Map.of("error", "Member Not Found"));
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(400).body(Map.of("status", "badRequest"));
         }
         return ResponseEntity.status(201).body(Map.of("status", "created"));
     }
 
     @PostMapping(value = "/api/focus-session/start")
-    public ResponseEntity<Object> startClock(HttpSession loginSession) {
-        // FocusStatus 변경
+    public ResponseEntity<Object> startClock(@RequestBody EmailInfo emailInfo) {
+        String email = emailInfo.getEmail();
+        memberService.updateFocusStatus(email, FOCUS);
 
-        //
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(value = "/api/focus-session/days/{email}")
+    public ResponseEntity<List<DailyCumulativeTime>> myPageDailyStatistics(@PathVariable("email") String email) {
+        MemberDto memberDto = memberService.findMemberDtoByEmail(email);
+        List<DailyCumulativeTime> cumulativeTimes = focusSessionService.findCumulativeTimeByDateAndMemberId(memberDto.getId());
+
+        return ResponseEntity.ok(cumulativeTimes);
+    }
+
     @GetMapping(value = "/api/focus-session/weeks/{email}")
-    public ResponseEntity<List<CumulativeWeekTimeDto>> myPageWeekStatistics(@PathVariable("email") String email) {
-        MemberDto memberDto = memberService.findMemberByEmail(email).get().toDto();
-        List<CumulativeWeekTimeDto> cumulativeWeekTimes = focusSessionService.findCumulativeWeekTimeByWeekAndMemberId(memberDto.getId());
+    public ResponseEntity<List<WeeklyCumulativeTime>> myPageWeekStatistics(@PathVariable("email") String email) {
+        MemberDto memberDto = memberService.findMemberDtoByEmail(email);
+        List<WeeklyCumulativeTime> cumulativeWeekTimes = focusSessionService.findCumulativeWeekTimeByWeekAndMemberId(memberDto.getId());
 
         return ResponseEntity.ok(cumulativeWeekTimes);
+    }
+
+    @GetMapping(value = "/api/focus-session/months/{email}")
+    public ResponseEntity<List<MonthlyCumulativeTime>> mypageMonthlyStatistics(@PathVariable("email") String email) {
+        MemberDto memberDto = memberService.findMemberDtoByEmail(email);
+        List<MonthlyCumulativeTime> monthlyCumulativeTimes = focusSessionService.findMonthlyCumulativeTimeByMemberId(memberDto.getId());
+
+        return ResponseEntity.ok(monthlyCumulativeTimes);
     }
 }

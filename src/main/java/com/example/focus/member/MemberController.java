@@ -1,6 +1,6 @@
 package com.example.focus.member;
 
-import com.example.focus.focussession.dto.CumulativeTimeDto;
+import com.example.focus.focussession.dto.DailyCumulativeTime;
 import com.example.focus.focussession.service.FocusSessionServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +48,7 @@ public class MemberController {
     public String login(String email, String pwd, HttpSession session) {
         String path = "members/login";
         try {
-            MemberDto member = memberService.findMemberByEmail(email).get().toDto();
+            MemberDto member = memberService.findMemberDtoByEmail(email);
             if (member.getPwd().equals(pwd)) {
                 session.setAttribute("loginId", email);
                 path = "home";
@@ -84,8 +84,8 @@ public class MemberController {
 //    }
     @GetMapping(value = "/members/mypage")
     public ModelAndView myPageStatistics(@RequestParam String email) {
-        MemberDto memberDto = memberService.findMemberByEmail(email).get().toDto();
-        List<CumulativeTimeDto> cumulativeTimes = focusSessionService.findCumulativeTimeByDateAndMemberId(memberDto.getId());
+        MemberDto memberDto = memberService.findMemberDtoByEmail(email);
+        List<DailyCumulativeTime> cumulativeTimes = focusSessionService.findCumulativeTimeByDateAndMemberId(memberDto.getId());
 
         ModelAndView mav = new ModelAndView("members/mypage");
         mav.addObject("cumulativeTimes", cumulativeTimes);

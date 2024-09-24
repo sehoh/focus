@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class CumulativeTimeDto {
+public class DailyCumulativeTime {
     private LocalDate date;
     private Long cumulativeTimeDiff; // 초 단위 누적 시간
 }

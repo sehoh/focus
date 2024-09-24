@@ -1,7 +1,7 @@
 package com.example.focus.focussession.service;
 
-import com.example.focus.focussession.dto.CumulativeTimeDto;
-import com.example.focus.focussession.dto.CumulativeWeekTimeDto;
+import com.example.focus.focussession.dto.DailyCumulativeTime;
+import com.example.focus.focussession.dto.WeeklyCumulativeTime;
 import com.example.focus.focussession.repository.FocusSessionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ class FocusSessionServiceImplTest {
     void cumulativeTimeByDateTest() {
 //        FocusSessionServiceImpl focusSessionService = new FocusSessionServiceImpl(focusSessionRepository);
 
-        List<CumulativeTimeDto> rs = focusSessionRepository.findCumulativeTimeByDate();
+        List<DailyCumulativeTime> rs = focusSessionRepository.findCumulativeTimeByDate();
 
         //
         assertThat(rs).isNotEmpty();
@@ -41,11 +41,11 @@ class FocusSessionServiceImplTest {
     @Test
     void cumulativeWeekTimeByWeekTest() {
         Long memberId = 1L;
-        List<CumulativeWeekTimeDto> rs = focusSessionRepository.findCumulativeTimeByWeekAndMemberId(memberId);
+        List<WeeklyCumulativeTime> rs = focusSessionRepository.findCumulativeTimeByWeekAndMemberId(memberId);
 
         assertThat(rs).isNotEmpty();
 
-        CumulativeWeekTimeDto thisWeek = rs.get(0);
+        WeeklyCumulativeTime thisWeek = rs.get(0);
 
 
 
