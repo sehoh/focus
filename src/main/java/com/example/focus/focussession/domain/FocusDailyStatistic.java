@@ -1,6 +1,7 @@
 package com.example.focus.focussession.domain;
 
 import com.example.focus.focussession.dto.FocusDailyStatisticDto;
+import com.example.focus.focussession.dto.MemberListDto;
 import com.example.focus.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,6 +34,20 @@ public class FocusDailyStatistic {
                 .id(this.id)
                 .member(this.member)
                 .date(this.date)
+                .startTime(this.startTime)
+                .endTime(this.endTime)
+                .totalCumulativeTime(this.totalCumulativeTime)
+                .maxDurationTime(this.maxDurationTime)
+                .build();
+    }
+
+    public MemberListDto toMemberListDto() {
+        return MemberListDto.builder()
+                .id(this.member.getId())
+                .username(this.member.getUsername())
+                .loginType(this.member.getLoginType())
+                .nickname(this.member.getNickname())
+                .focusStatus(this.member.getFocusStatus())
                 .startTime(this.startTime)
                 .endTime(this.endTime)
                 .totalCumulativeTime(this.totalCumulativeTime)

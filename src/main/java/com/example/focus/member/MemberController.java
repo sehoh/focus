@@ -1,6 +1,7 @@
 package com.example.focus.member;
 
 import com.example.focus.focussession.dto.DailyCumulativeTime;
+import com.example.focus.focussession.dto.MemberListDto;
 import com.example.focus.focussession.service.FocusSessionServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -65,23 +66,13 @@ public class MemberController {
         return "redirect:/";
     }
 
-
     @GetMapping(value = "/members")
-    public String List(Model model) {
-        List<Member> members = memberService.findMembers();
-        model.addAttribute("members", members);
+    public String focusList(Model model) {
+        List<MemberListDto> focusMembers = memberService.getMembersDailyStat();
+        model.addAttribute("focusMembers", focusMembers);
         return "members/memberList";
     }
 
-
-//    @GetMapping(value = "/members/mypage")
-//    public ModelAndView Mypage(String email, HttpSession loginSession) {
-////        MemberDto memberDto = memberService.findMember(String.valueOf(loginSession.getAttribute("loginId"))).get().toDto();
-//        MemberDto memberDto = memberService.findMemberByEmail(email).get().toDto();
-//        ModelAndView mav = new ModelAndView("members/detail");
-//        mav.addObject("member", memberDto);
-//        return mav;
-//    }
     @GetMapping(value = "/members/mypage")
     public ModelAndView myPageStatistics(@RequestParam String email) {
         MemberDto memberDto = memberService.findMemberDtoByEmail(email);
