@@ -30,49 +30,15 @@ public class FocusSessionTagServiceImpl implements FocusSessionTagService{
     }
 
 
-    // 테스트용 태그 추가
-    public void createTest(TagRequest tagRequest, Member member) {
-        // 1 태그 등록
-//        Tag tag = tagRepository.save(focusSessionTag.getTag());
-        List<Tag> tags = new ArrayList<>();
-        for (String tag : tagRequest.getTags()) {
-            tags.add(
-                    tagRepository.save(Tag.builder()
-                    .name(tag)
-                    .created(LocalDate.now()).build()));
-        }
-
-        /*
-        각 태그에 대한 entity 정보들을 집중세션태그 등록시에 사용되어져야 함!
-         */
-
-        // 2 집중세션 등록
-        FocusSession focusSession = focusSessionRepository.save(FocusSession.builder()
-                .member(member)
-                .startDateTime(tagRequest.getStartDateTime())
-                .endDateTime(tagRequest.getEndDateTime()).build());
-
-       /*
-       * 집중세션에 대한 entity 정보를 집중세션태그 등록시에 사용되어저야 함!
-       * */
-        // 3 집중세션태그 등록
-        for (Tag tag : tags) {
-            focusTagRepository.save(FocusSessionTag.builder()
-                    .tag(tag)
-                    .focusSession(focusSession).build());
-        }
-
-    }
-
     public List<FocusSessionTagDto> createByTagRequest(TagRequest tagRequest, MemberDto memberDto) {
         // 1 태그 등록
-//        Tag tag = tagRepository.save(focusSessionTag.getTag());
         List<Tag> tags = new ArrayList<>();
-        for (String tag : tagRequest.getTags()) {
-            tags.add(
-                    tagRepository.save(Tag.builder()
-                    .name(tag)
-                    .created(LocalDate.now()).build()));
+        for (String tagName : tagRequest.getTags()) {
+            Tag tag = tagRepository.findByName(tagName)
+                    .orElseGet(() -> tagRepository.save(Tag.builder()
+                            .name(tagName)
+                            .created(LocalDate.now()).build()));
+            tags.add(tag);
         }
 
         /*
@@ -88,19 +54,25 @@ public class FocusSessionTagServiceImpl implements FocusSessionTagService{
        /*
        * 집중세션에 대한 entity 정보를 집중세션태그 등록시에 사용되어저야 함!
        * */
-        List<FocusSessionTagDto> focusSessionTagDtos = new ArrayList<FocusSessionTagDto>();
+        List<FocusSessionTagDto> focusSessionTagList = new ArrayList<FocusSessionTagDto>();
         // 3 집중세션태그 등록
         for (Tag tag : tags) {
-            focusSessionTagDtos.add(focusTagRepository.save(FocusSessionTag.builder()
+            focusSessionTagList.add(focusTagRepository.save(FocusSessionTag.builder()
                     .tag(tag)
                     .focusSession(focusSession).build()).toDto());
         }
-        return focusSessionTagDtos;
+        return focusSessionTagList;
     }
 
     @Override
     public List<Tag> findTagsByMemberId(Long memberId) {
         return tagRepository.findTagsByMemberId(memberId);
+    }
+
+    @Override
+    public List<TagDto> findTagsByEmail(String email) {
+
+        return tagRepository.findTagsByEmail(email).stream().map(Tag::toDto).toList();
     }
 
     public List<Tag> findTags() {

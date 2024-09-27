@@ -19,6 +19,7 @@ public class Tag implements Persistable<Long> {
     @Column(name = "tag_id")
     private Long id;
 
+    @Column(name = "name", unique = true)
     private String name;
 
     @CreatedDate
