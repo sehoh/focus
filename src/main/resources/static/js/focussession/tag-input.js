@@ -47,4 +47,35 @@ function sendTagsToServer() {
     });
 }
 
+function testTagSearch() {
+    var tags = tagify.value.map(tag => tag.value);
+
+    if (tags.length === 0) {
+        return;
+    }
+
+    var url;
+
+    if (tags.length === 1) {
+
+        url = `/api/focus-session/search?tag=${encodeURIComponent(tags[0])}`;
+
+    } else {
+        var queryString = tags.map(tag => `tags=${encodeURIComponent(tag)}`).join("&");
+        url = `/api/focus-session/search/multi?${queryString}`;
+    }
+
+    $.ajax({
+        method: "GET",
+        url: url,
+    }).done(function (data, status) {
+        console.log("tags: " + tags);
+        console.log("queryString " + queryString);
+        console.log("Response data:", data, "and status: ", status);
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.log("Error: ", textStatus, errorThrown);
+    });
+}
+
 document.querySelector("#submitTags").addEventListener("click", sendTagsToServer);
+document.querySelector("#testTags").addEventListener("click", testTagSearch);

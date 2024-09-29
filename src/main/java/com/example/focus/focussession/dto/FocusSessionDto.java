@@ -24,4 +24,13 @@ public class FocusSessionDto {
                 .member(this.member.toEntity())
                 .build();
     }
+
+    public FocusSessionResponse toResponse() {
+        return FocusSessionResponse.builder()
+                .id(this.id)
+                .startDateTime(this.startDateTime)
+                .endDateTime(this.endDateTime)
+                .name(member.getNickname())
+                .build();
+    }
 }

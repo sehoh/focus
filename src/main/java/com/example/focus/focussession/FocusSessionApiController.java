@@ -2,10 +2,7 @@ package com.example.focus.focussession;
 
 import com.example.focus.DateTimeUtils;
 import com.example.focus.focussession.domain.FocusSession;
-import com.example.focus.focussession.dto.MonthlyCumulativeTime;
-import com.example.focus.focussession.dto.DailyCumulativeTime;
-import com.example.focus.focussession.dto.WeeklyCumulativeTime;
-import com.example.focus.focussession.dto.EmailInfo;
+import com.example.focus.focussession.dto.*;
 import com.example.focus.focussession.service.FocusSessionServiceImpl;
 import com.example.focus.member.MemberDto;
 import com.example.focus.member.MemberServiceImpl;
@@ -74,7 +71,7 @@ public class FocusSessionApiController {
     @GetMapping(value = "/api/focus-session/days/{email}")
     public ResponseEntity<List<DailyCumulativeTime>> myPageDailyStatistics(@PathVariable("email") String email) {
         MemberDto memberDto = memberService.findMemberDtoByEmail(email);
-        List<DailyCumulativeTime> cumulativeTimes = focusSessionService.findCumulativeTimeByDateAndMemberId(memberDto.getId());
+        List<DailyCumulativeTime> cumulativeTimes = focusSessionService.findDailyCumulativeTimeByMemberId(memberDto.getId());
 
         return ResponseEntity.ok(cumulativeTimes);
     }
@@ -82,7 +79,7 @@ public class FocusSessionApiController {
     @GetMapping(value = "/api/focus-session/weeks/{email}")
     public ResponseEntity<List<WeeklyCumulativeTime>> myPageWeekStatistics(@PathVariable("email") String email) {
         MemberDto memberDto = memberService.findMemberDtoByEmail(email);
-        List<WeeklyCumulativeTime> cumulativeWeekTimes = focusSessionService.findCumulativeWeekTimeByWeekAndMemberId(memberDto.getId());
+        List<WeeklyCumulativeTime> cumulativeWeekTimes = focusSessionService.findWeeklyCumulativeTimeByMemberId(memberDto.getId());
 
         return ResponseEntity.ok(cumulativeWeekTimes);
     }
@@ -93,5 +90,20 @@ public class FocusSessionApiController {
         List<MonthlyCumulativeTime> monthlyCumulativeTimes = focusSessionService.findMonthlyCumulativeTimeByMemberId(memberDto.getId());
 
         return ResponseEntity.ok(monthlyCumulativeTimes);
+    }
+
+    @GetMapping("/api/focus-session/search")
+    public List<FocusSessionResponse> searchByTag(@RequestParam String tag) {
+
+        return focusSessionService.findFocusSessionByTagName(tag).stream().map(FocusSessionDto::toResponse).toList();
+    }
+
+    @GetMapping("/api/focus-session/search/multi")
+    public ResponseEntity<List<FocusSessionResponse>> searchByTags(@RequestParam List<String> tags) {
+
+        List<FocusSessionResponse> focusSessionResponses = focusSessionService.findFocusSessionByTagNames(tags)
+                .stream().map(FocusSessionDto::toResponse).toList();
+
+        return ResponseEntity.ok(focusSessionResponses);
     }
 }

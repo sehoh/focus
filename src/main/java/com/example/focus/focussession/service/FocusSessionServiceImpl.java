@@ -1,9 +1,11 @@
 package com.example.focus.focussession.service;
 
 import com.example.focus.focussession.domain.FocusSession;
-import com.example.focus.focussession.dto.MonthlyCumulativeTime;
 import com.example.focus.focussession.dto.DailyCumulativeTime;
+import com.example.focus.focussession.dto.FocusSessionDto;
+import com.example.focus.focussession.dto.MonthlyCumulativeTime;
 import com.example.focus.focussession.dto.WeeklyCumulativeTime;
+import com.example.focus.focussession.repository.FocusSessionQueryRepository;
 import com.example.focus.focussession.repository.FocusSessionRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,11 @@ import java.util.Optional;
 @Service
 public class FocusSessionServiceImpl implements FocusSessionService{
     private final FocusSessionRepository focusRepository;
+    private final FocusSessionQueryRepository queryRepository;
 
-    public FocusSessionServiceImpl(FocusSessionRepository repository) {
+    public FocusSessionServiceImpl(FocusSessionRepository repository, FocusSessionQueryRepository queryRepository) {
         this.focusRepository = repository;
+        this.queryRepository = queryRepository;
     }
 
     @Override
@@ -28,11 +32,11 @@ public class FocusSessionServiceImpl implements FocusSessionService{
         return Optional.empty();
     }
 
-    public List<DailyCumulativeTime> findCumulativeTimeByDateAndMemberId(Long memberId) {
+    public List<DailyCumulativeTime> findDailyCumulativeTimeByMemberId(Long memberId) {
         return focusRepository.findCumulativeTimeByDateAndMemberId(memberId);
     }
 
-    public List<WeeklyCumulativeTime> findCumulativeWeekTimeByWeekAndMemberId(Long memberId) {
+    public List<WeeklyCumulativeTime> findWeeklyCumulativeTimeByMemberId(Long memberId) {
         return focusRepository.findCumulativeTimeByWeekAndMemberId(memberId);
     }
 
@@ -43,5 +47,15 @@ public class FocusSessionServiceImpl implements FocusSessionService{
     @Override
     public List<FocusSession> list() {
         return focusRepository.findAll();
+    }
+
+    @Override
+    public List<FocusSessionDto> findFocusSessionByTagName(String tagName) {
+        return queryRepository.findSessionsByTagName(tagName).stream().map(FocusSession::toDto).toList();
+    }
+
+    @Override
+    public List<FocusSessionDto> findFocusSessionByTagNames(List<String> tagNames) {
+        return queryRepository.findSessionsByTagNames(tagNames).stream().map(FocusSession::toDto).toList();
     }
 }

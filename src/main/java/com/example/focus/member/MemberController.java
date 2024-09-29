@@ -76,7 +76,7 @@ public class MemberController {
     @GetMapping(value = "/members/mypage")
     public ModelAndView myPageStatistics(@RequestParam String email) {
         MemberDto memberDto = memberService.findMemberDtoByEmail(email);
-        List<DailyCumulativeTime> cumulativeTimes = focusSessionService.findCumulativeTimeByDateAndMemberId(memberDto.getId());
+        List<DailyCumulativeTime> cumulativeTimes = focusSessionService.findDailyCumulativeTimeByMemberId(memberDto.getId());
 
         ModelAndView mav = new ModelAndView("members/mypage");
         mav.addObject("cumulativeTimes", cumulativeTimes);
