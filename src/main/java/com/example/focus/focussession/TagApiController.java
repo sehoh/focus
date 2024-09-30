@@ -21,7 +21,6 @@ import static com.example.focus.member.FocusStatus.NONE;
 @Slf4j
 public class TagApiController {
 
-    private final FocusSessionServiceImpl focusSessionService;
     private final FocusSessionTagServiceImpl focusSessionTagService;
     private final MemberServiceImpl memberService;
 

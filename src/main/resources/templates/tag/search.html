@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body>
+
+<div class="container">
+  <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+  <div style="margin: 100px; align-items: center">
+    <input placeholder="태그를 입력해주세요" id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
+           class="tagify-outside" aria-describedby="tagHelp" style="margin-right: 10px"/>
+    <button id="searchTags" style="height: 40px;">검색</button>
+  </div>
+<!--검색 결과-->
+  <div style="margin: 20px 100px">
+    <table class="table table-striped" id="search-tag-result" style="display: none">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>닉네임</th>
+        <th>시작시간</th>
+        <th>종료시간</th>
+      </tr>
+      </thead>
+      <tbody id="search-tag-resultBody">
+
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script type="module" th:src="@{/js/tag/search-tags.js}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+<link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+<link href="/css/tag-dropdown.css" rel="stylesheet">
+
+
+</body>
+</html>
